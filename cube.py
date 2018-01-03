@@ -49,7 +49,7 @@ class FaceletCube:
 
     # Assigns values to each facelet by interpreting an input string
     def stringToColour(self, string):
-        for i in range(54):
+        for i in range(len(string)):
             if string[i] == "U":
                 self.fc[i] = Colour.U
             elif string[i] == "R":
@@ -62,6 +62,8 @@ class FaceletCube:
                 self.fc[i] = Colour.L
             elif string[i] == "B":
                 self.fc[i] = Colour.B
+            else:
+                pass
 
     # This list defines the identity move (no facelets move)
     moveI = [0, 1, 2, 3, 4, 5, 6, 7, 8,
@@ -142,6 +144,10 @@ class FaceletCube:
 def main():
     # Creates the object fc, which is of the class FaceletCube
     fc = FaceletCube()
+
+    # This defines the initial state of the cube
+    stateString = input("Enter initial cube state: ")
+    fc.stringToColour(stateString)
 
     # The main program loop
     while True:
