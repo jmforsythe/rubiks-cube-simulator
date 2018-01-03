@@ -12,7 +12,13 @@ class Colour(IntEnum):
 
 
 class FaceletCube:
-    # This class represents the cube as a list of 54 colours
+    """This class represents the cube as a list of 54 colours
+
+    It also contains methods for:
+    1. Performing moves on the cube
+    2. Combining cube moves together before execution
+    3. Converting between the internal representation and a string that the user can understand
+    """
     def __init__(self):
         self.fc = []
         for i in range(9):
@@ -29,26 +35,27 @@ class FaceletCube:
             self.fc.append(Colour.B)
 
     # Converts from the internal representation to a string that the user can read
-    def colourToString(self):
-        outputString = ""
+    def colour_to_string(self):
+        output_string = ""
         for i in range(54):
             if self.fc[i] == Colour.U:
-                outputString += "U"
+                output_string += "U"
             elif self.fc[i] == Colour.R:
-                outputString += "R"
+                output_string += "R"
             elif self.fc[i] == Colour.F:
-                outputString += "F"
+                output_string += "F"
             elif self.fc[i] == Colour.D:
-                outputString += "D"
+                output_string += "D"
             elif self.fc[i] == Colour.L:
-                outputString += "L"
+                output_string += "L"
             elif self.fc[i] == Colour.B:
-                outputString += "B"
-            if (i + 1) % 9 == 0 and i > 0: outputString += " "
-        return outputString
+                output_string += "B"
+            if (i + 1) % 9 == 0 and i > 0:
+                output_string += " "
+        return output_string
 
     # Assigns values to each facelet by interpreting an input string
-    def stringToColour(self, string):
+    def string_to_colour(self, string):
         for i in range(len(string)):
             if string[i] == "U":
                 self.fc[i] = Colour.U
@@ -117,28 +124,29 @@ class FaceletCube:
              51, 48, 45, 52, 49, 46, 53, 50, 47]
 
     # This function combines any two reordering lists of the same length
-    def combineMove(self, move1, move2):
-        combinedMove = [move1[i] for i in move2]
-        return combinedMove
+    @staticmethod
+    def combine_move(move1, move2):
+        combined_move = [move1[i] for i in move2]
+        return combined_move
 
     # This function takes a string consisting of some combination of the 6 basic moves, combines them into a single
     # move, and executes them
-    def executeMove(self, string):
-        currentMove = self.moveI
+    def execute_move(self, string):
+        current_move = self.moveI
         for character in string:
             if character == "U":
-                currentMove = self.combineMove(currentMove, self.moveU)
+                current_move = self.combine_move(current_move, self.moveU)
             elif character == "R":
-                currentMove = self.combineMove(currentMove, self.moveR)
+                current_move = self.combine_move(current_move, self.moveR)
             elif character == "F":
-                currentMove = self.combineMove(currentMove, self.moveF)
+                current_move = self.combine_move(current_move, self.moveF)
             elif character == "D":
-                currentMove = self.combineMove(currentMove, self.moveD)
+                current_move = self.combine_move(current_move, self.moveD)
             elif character == "L":
-                currentMove = self.combineMove(currentMove, self.moveL)
+                current_move = self.combine_move(current_move, self.moveL)
             elif character == "B":
-                currentMove = self.combineMove(currentMove, self.moveB)
-        self.fc = [self.fc[i] for i in currentMove]
+                current_move = self.combine_move(current_move, self.moveB)
+        self.fc = [self.fc[i] for i in current_move]
 
 
 def main():
@@ -146,30 +154,30 @@ def main():
     fc = FaceletCube()
 
     # This defines the initial state of the cube
-    stateString = input("Enter initial cube state: ")
-    fc.stringToColour(stateString)
+    state_string = input("Enter initial cube state: ")
+    fc.string_to_colour(state_string)
 
     # The main program loop
     while True:
-        print(fc.colourToString())
-        moveString = ""
-        userInput = input("Enter move string: ")
-        for i in range(len(userInput)):
+        print(fc.colour_to_string())
+        move_string = ""
+        user_input = input("Enter move string: ")
+        for i in range(len(user_input)):
             # Support for 90° clockwise moves
-            if userInput[i] in ["U", "R", "F", "D", "L", "B"]:
-                moveString += userInput[i]
+            if user_input[i] in ["U", "R", "F", "D", "L", "B"]:
+                move_string += user_input[i]
             # Support for 90° anticlockwise moves
-            elif userInput[i] == "\'":
-                moveString += userInput[i - 1] * 2
+            elif user_input[i] == "\'":
+                move_string += user_input[i - 1] * 2
             # Support for 180° moves
-            elif userInput[i] == "2":
-                moveString += userInput[i - 1]
+            elif user_input[i] == "2":
+                move_string += user_input[i - 1]
             # Support for spaces and commas in user input
-            elif userInput in [" ", ","]:
+            elif user_input in [" ", ","]:
                 pass
             else:
                 return 0
-        fc.executeMove(moveString)
+        fc.execute_move(move_string)
 
 
 if __name__ == "__main__":
