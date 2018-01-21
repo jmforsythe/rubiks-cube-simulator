@@ -2,13 +2,152 @@ from enum import IntEnum
 
 
 class Colour(IntEnum):
-    # This class defines the data type that is used in the internal representation of the facelets of the cube
+    # This class assigns numbers to the facelets of the cube for easier representation
     U = 0
     R = 1
     F = 2
     D = 3
     L = 4
     B = 5
+
+
+class Facelets(IntEnum):
+    """""
+    The names of the facelet positions of the cube
+                  |************|
+                  |*U1**U2**U3*|
+                  |************|
+                  |*U4**U5**U6*|
+                  |************|
+                  |*U7**U8**U9*|
+                  |************|
+     |************|************|************|************|
+     |*L1**L2**L3*|*F1**F2**F3*|*R1**R2**F3*|*B1**B2**B3*|
+     |************|************|************|************|
+     |*L4**L5**L6*|*F4**F5**F6*|*R4**R5**R6*|*B4**B5**B6*|
+     |************|************|************|************|
+     |*L7**L8**L9*|*F7**F8**F9*|*R7**R8**R9*|*B7**B8**B9*|
+     |************|************|************|************|
+                  |************|
+                  |*D1**D2**D3*|
+                  |************|
+                  |*D4**D5**D6*|
+                  |************|
+                  |*D7**D8**D9*|
+                  |************|
+
+    A cube definition string "UBL..." means for example: In position U1 we have the U-color, in position U2 we have the
+    B-color, in position U3 we have the L color etc. according to the order U1, U2, U3, U4, U5, U6, U7, U8, U9, R1, R2,
+    R3, R4, R5, R6, R7, R8, R9, F1, F2, F3, F4, F5, F6, F7, F8, F9, D1, D2, D3, D4, D5, D6, D7, D8, D9, L1, L2, L3, L4,
+    L5, L6, L7, L8, L9, B1, B2, B3, B4, B5, B6, B7, B8, B9 of the enum constants.
+    """
+    U1 = 0
+    U2 = 1
+    U3 = 2
+    U4 = 3
+    U5 = 4
+    U6 = 5
+    U7 = 6
+    U8 = 7
+    U9 = 8
+    R1 = 9
+    R2 = 10
+    R3 = 11
+    R4 = 12
+    R5 = 13
+    R6 = 14
+    R7 = 15
+    R8 = 16
+    R9 = 17
+    F1 = 18
+    F2 = 19
+    F3 = 20
+    F4 = 21
+    F5 = 22
+    F6 = 23
+    F7 = 24
+    F8 = 25
+    F9 = 26
+    D1 = 27
+    D2 = 28
+    D3 = 29
+    D4 = 30
+    D5 = 31
+    D6 = 32
+    D7 = 33
+    D8 = 34
+    D9 = 35
+    L1 = 36
+    L2 = 37
+    L3 = 38
+    L4 = 39
+    L5 = 40
+    L6 = 41
+    L7 = 42
+    L8 = 43
+    L9 = 44
+    B1 = 45
+    B2 = 46
+    B3 = 47
+    B4 = 48
+    B5 = 49
+    B6 = 50
+    B7 = 51
+    B8 = 52
+    B9 = 53
+
+
+class Corners(IntEnum):
+    # This class assigns numbers to the corners of the cube for easier representation
+    URF = 0
+    UFL = 1
+    ULB = 2
+    UBR = 3
+    DFR = 4
+    DLF = 5
+    DBL = 6
+    DRB = 7
+
+
+class Edges(IntEnum):
+    # This class assigns numbers to the edges of the cube for easier representation
+    UR = 0
+    UF = 1
+    UL = 2
+    UB = 3
+    DR = 4
+    DF = 5
+    DL = 6
+    DB = 7
+    FR = 8
+    FL = 9
+    BL = 10
+    BR = 11
+
+
+# These lists map each corner cubelet to its corresponding facelet colours
+corner_colours = [[Colour.U, Colour.R, Colour.F], [Colour.U, Colour.F, Colour.L],
+                 [Colour.U, Colour.L, Colour.B], [Colour.U, Colour.B, Colour.R],
+                 [Colour.D, Colour.F, Colour.R], [Colour.D, Colour.L, Colour.F],
+                 [Colour.D, Colour.B, Colour.L], [Colour.D, Colour.R, Colour.B]
+                 ]
+corner_facelets = [[Facelets.U9, Facelets.R1, Facelets.F3], [Facelets.U7, Facelets.F1, Facelets.L3],
+                  [Facelets.U1, Facelets.L1, Facelets.B3], [Facelets.U3, Facelets.B1, Facelets.R3],
+                  [Facelets.D3, Facelets.F9, Facelets.R7], [Facelets.D1, Facelets.L9, Facelets.F7],
+                  [Facelets.D7, Facelets.B9, Facelets.L7], [Facelets.D9, Facelets.R9, Facelets.B7]
+                 ]
+
+# These lists map each edge cubelet to its corresponding facelet colours
+edge_colours = [[Colour.U, Colour.R], [Colour.U, Colour.F], [Colour.U, Colour.L],
+             [Colour.U, Colour.B], [Colour.D, Colour.R], [Colour.D, Colour.F],
+             [Colour.D, Colour.L], [Colour.D, Colour.B], [Colour.F, Colour.R],
+             [Colour.F, Colour.L], [Colour.B, Colour.L], [Colour.B, Colour.R]
+             ]
+edge_facelets = [[Facelets.U6, Facelets.R2], [Facelets.U8, Facelets.F2], [Facelets.U4, Facelets.L2],
+               [Facelets.U2, Facelets.B2], [Facelets.D6, Facelets.R8], [Facelets.D2, Facelets.F8],
+               [Facelets.D4, Facelets.L8], [Facelets.D8, Facelets.B8], [Facelets.F6, Facelets.R4],
+               [Facelets.F4, Facelets.L6], [Facelets.B6, Facelets.L4], [Facelets.B4, Facelets.R6]
+               ]
 
 
 class FaceletCube:
@@ -35,7 +174,7 @@ class FaceletCube:
             self.fc.append(Colour.B)
 
     # Converts from the internal representation to a string that the user can read
-    def colour_to_string(self):
+    def facelet_to_string(self):
         output_string = ""
         for i in range(54):
             if self.fc[i] == Colour.U:
@@ -55,7 +194,7 @@ class FaceletCube:
         return output_string
 
     # Assigns values to each facelet by interpreting an input string
-    def string_to_colour(self, string):
+    def string_to_facelet(self, string):
         for i in range(len(string)):
             if string[i] == "U":
                 self.fc[i] = Colour.U
@@ -149,17 +288,61 @@ class FaceletCube:
         self.fc = [self.fc[i] for i in current_move]
 
 
+class CubeletCube:
+    """This class represents a cubelet cube using 4 lists:
+    1. The positions of the corners
+    2. The orientation of the corners
+    3. The positions of the edges
+    4. The orientations of the edges
+
+    It also includes methods that:
+    1. Convert the cube to a facelet representation
+    2. Convert the cube to a string representation that can be read by the user
+    """
+    def __init__(self):
+        self.corner_positions = [Corners[i] for i in range(0, 8)]
+        self.corner_orientation = [0, 0, 0, 0, 0, 0, 0, 0]
+        self.edge_positions = [Edges[i] for i in range(0, 12)]
+        self.edge_orientation = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    # Converts from cubelet representation to facelet representation
+    def cubelet_to_colour(self):
+        fc = FaceletCube()
+        for corner in Corners:
+            position = self.corner_positions[i]
+            orientation = self.corner_orientation[i]
+            for face_of_cubelet in range(3):
+                fc.fc[corner_facelets[corner][(face_of_cubelet + orientation) % 3]] = corner_colours[position][face_of_cubelet]
+        for edge in Edges:
+            position = self.edge_positions[i]
+            orientation = self.edge_orientation[i]
+            for face_of_cubelet in range(2):
+                fc.fc[edge_facelets[edge][(face_of_cubelet + orientation) % 2]] = edge_colours[position][face_of_cubelet]
+        return fc
+
+    # Converts from cubelet representation to a string that the user can understand
+    def cubelet_to_string(self):
+        output_string = ""
+        for corner in Corners:
+            output_string += "(" + str(self.corner_positions[corner]) + ',' + str(self.corner_orientation[corner]) + ')'
+        output_string += '\n'
+        for edge in Edges:
+            output_string += "(" + str(self.edge_positions[corner]) + ',' + str(self.edge_orientation[corner]) + ')'
+        output_string += '\n'
+        return output_string
+
+
 def main():
     # Creates the object fc, which is of the class FaceletCube
     fc = FaceletCube()
 
     # This defines the initial state of the cube
     state_string = input("Enter initial cube state: ")
-    fc.string_to_colour(state_string)
+    fc.string_to_facelet(state_string)
 
     # The main program loop
     while True:
-        print(fc.colour_to_string())
+        print(fc.facelet_to_string())
         move_string = ""
         user_input = input("Enter move string: ")
         for i in range(len(user_input)):
