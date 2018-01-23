@@ -349,6 +349,8 @@ def main():
     # Creates the object fc, which is of the class FaceletCube
     fc = FaceletCube()
 
+    cc = CubeletCube()
+
     # This defines the initial state of the cube
     state_string = input("Enter initial cube state: ")
     fc.string_to_facelet(state_string)
@@ -356,6 +358,8 @@ def main():
     # The main program loop
     while True:
         print(fc.facelet_to_string())
+        cc = fc.facelet_to_cubelet()
+        print(cc.cubelet_to_string())
         move_string = ""
         user_input = input("Enter move string: ")
         for i in range(len(user_input)):
