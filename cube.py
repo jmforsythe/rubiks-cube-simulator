@@ -96,7 +96,7 @@ class Edges(IntEnum):
     BR = 11
 
 
-# These lists map each corner cubelet to its corresponding facelet colours, going starting with U or D and going clockwise
+# These lists map each corner cubelet to its corresponding facelet colours, starting with U or D and going clockwise
 corner_colours = [[Colour.U, Colour.R, Colour.F], [Colour.U, Colour.F, Colour.L],
                   [Colour.U, Colour.L, Colour.B], [Colour.U, Colour.B, Colour.R],
                   [Colour.D, Colour.F, Colour.R], [Colour.D, Colour.L, Colour.F],
@@ -166,21 +166,32 @@ class FaceletCube:
 
     # Assigns values to each facelet by interpreting an input string
     def string_to_facelet(self, string):
-        for i in range(len(string)):
-            if string[i] == "U":
-                self.fc[i] = Colour.U
-            elif string[i] == "R":
-                self.fc[i] = Colour.R
-            elif string[i] == "F":
-                self.fc[i] = Colour.F
-            elif string[i] == "D":
-                self.fc[i] = Colour.D
-            elif string[i] == "L":
-                self.fc[i] = Colour.L
-            elif string[i] == "B":
-                self.fc[i] = Colour.B
-            else:
-                pass
+        # We will have a running count for each face colour in order to verify that there are 9 facelets of each colour
+        count = [0, 0, 0, 0, 0, 0]
+        for facelet in range(len(string)):
+            if string[facelet] == "U":
+                self.fc[facelet] = Colour.U
+                count[Colour.U] += 1
+            elif string[facelet] == "R":
+                self.fc[facelet] = Colour.R
+                count[Colour.R] += 1
+            elif string[facelet] == "F":
+                self.fc[facelet] = Colour.F
+                count[Colour.F] += 1
+            elif string[facelet] == "D":
+                self.fc[facelet] = Colour.D
+                count[Colour.D] += 1
+            elif string[facelet] == "L":
+                self.fc[facelet] = Colour.L
+                count[Colour.L] += 1
+            elif string[facelet] == "B":
+                self.fc[facelet] = Colour.B
+                count[Colour.B] += 1
+        # Checks that each of the counts equals 9
+        if all(i == 9 for i in count):
+            return "Valid cube."
+        else:
+            return "Cube initial state does not contain 9 of each colour."
 
     # Converts from the facelet representation to a cubelet representation
     def facelet_to_cubelet(self):
@@ -344,16 +355,87 @@ class CubeletCube:
         output_string += '\n'
         return output_string
 
+    # Checks that the currently stored cubelet cube is in a valid state
+    def is_valid_state(self):
+
+        # Checks that there is exactly one case of each edge cubelet in the cubelet cube
+        edge_count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # Counts each occurrence of each edge
+        for edge in Edges:
+            edge_count[self.edge_positions[edge]] += 1
+        # Checks the each corner occurs exactly once
+        for edge in Edges:
+            if edge_count[edge] != 1:
+                return 'Error: Not all edges exist.'
+
+        # Checks that there is exactly one case of each corner cubelet in the cubelet cube
+        corner_count = [0, 0, 0, 0, 0, 0, 0, 0]
+        # Counts each occurrence of each corner
+        for corner in Corners:
+            corner_count[self.corner_positions[corner]] += 1
+        # Checks the each corner occurs exactly once
+        for corner in Corners:
+            if corner_count[corner] != 1:
+                return 'Error: Not all corners exist.'
+
+        edge_twist = 0
+        for edge in Edges:
+            edge_twist += self.edge_orientation[edge]
+        if edge_twist % 2 != 0:
+            return 'Error: Total edge twist is wrong.'
+
+        corner_twist = 0
+        for corner in Corners:
+            corner_twist += self.corner_orientation[corner]
+        if corner_twist % 3 != 0:
+            return 'Error: Total corner twist is wrong.'
+
+        # Parity of a cube refers to whether the swaps required to make that cube from a solved cube is even or odd
+        # The total parity must always be even, either from having edge and corner parity be both even or both odd
+
+        # Calculates if the edges of the cubelet cube have even or odd parity
+        edge_parity = 0
+        for edge in range(Edges.BR, Edges.UR, -1):
+            for test_edge in range(edge - 1, Edges.UR - 1, -1):
+                if self.edge_positions[test_edge] > self.edge_positions[edge]:
+                    edge_parity += 1
+        edge_parity = edge_parity % 2
+
+        # Calculates if the corners of the cubelet cube have even or odd parity
+        corner_parity = 0
+        for corner in range(Corners.DRB, Corners.URF, -1):
+            for test_corner in range(corner - 1, Corners.URF - 1, -1):
+                if self.corner_positions[test_corner] > self.edge_positions[corner]:
+                    corner_parity += 1
+        corner_parity = corner_parity % 2
+
+        if edge_parity != corner_parity:
+            return 'Error: Wrong edge and corner parity.'
+
+        return "Valid cube."
+
 
 def main():
     # Creates the object fc, which is of the class FaceletCube
     fc = FaceletCube()
 
-    cc = CubeletCube()
-
     # This defines the initial state of the cube
-    state_string = input("Enter initial cube state: ")
-    fc.string_to_facelet(state_string)
+    state_string = input("Enter initial cube state (leave blank for solved cube): ")
+
+    # Skips cube verification if state string is empty
+    if state_string != "":
+        # Checks that the cube is a valid facelet cube
+        is_valid = fc.string_to_facelet(state_string)
+        if is_valid != "Valid cube.":
+            print(is_valid)
+            return 0
+
+        # Checks that the cube is a valid cubelet cube
+        cc = fc.facelet_to_cubelet()
+        is_valid = cc.is_valid_state()
+        if is_valid != "Valid cube.":
+            print(is_valid)
+            return 0
 
     # The main program loop
     while True:
