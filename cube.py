@@ -440,8 +440,6 @@ def main():
     # The main program loop
     while True:
         print(fc.facelet_to_string())
-        cc = fc.facelet_to_cubelet()
-        print(cc.cubelet_to_string())
         move_string = ""
         user_input = input("Enter move string: ")
         for i in range(len(user_input)):
