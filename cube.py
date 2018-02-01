@@ -314,6 +314,15 @@ class FaceletCube:
     def execute_move(self, string):
         self.fc = [self.fc[i] for i in self.combine_move_string(string)]
 
+    def calculate_degree(self, string):
+        combined_move = self.moveI
+        counter = 0
+        while True:
+            combined_move = self.combine_move_string(string, combined_move)
+            counter += 1
+            if combined_move == self.moveI:
+                return counter
+
 
 class CubeletCube:
     """This class represents a cubelet cube using 4 lists:
@@ -459,7 +468,7 @@ def main():
                 move_string += user_input[i - 1]
         # If user tells program to repeat, it will perform entered move sequence until returning to starting position
         if "repeat" in user_input:
-            fc.calculate_degree(move_string)
+            print("This move sequence takes %d repetitions to repeat itself" % fc.calculate_degree(move_string))
         # If not, execute the entered move string
         else:
             fc.execute_move(move_string)
