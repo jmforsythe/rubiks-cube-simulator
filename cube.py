@@ -293,8 +293,8 @@ class FaceletCube:
         return combined_move
 
     # This function combines every move inside of a string containing our 6 basic moves
-    def combine_move_string(self, string):
-        combined_move = self.moveI
+    def combine_move_string(self, string, initial_move = moveI):
+        combined_move = initial_move
         for character in string:
             if character == "U":
                 combined_move = self.combine_move(combined_move, self.moveU)
