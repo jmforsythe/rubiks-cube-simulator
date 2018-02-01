@@ -292,24 +292,27 @@ class FaceletCube:
         combined_move = [move1[i] for i in move2]
         return combined_move
 
-    # This function takes a string consisting of some combination of the 6 basic moves, combines them into a single
-    # move, and executes them
-    def execute_move(self, string):
-        current_move = self.moveI
+    # This function combines every move inside of a string containing our 6 basic moves
+    def combine_move_string(self, string):
+        combined_move = self.moveI
         for character in string:
             if character == "U":
-                current_move = self.combine_move(current_move, self.moveU)
+                combined_move = self.combine_move(combined_move, self.moveU)
             elif character == "R":
-                current_move = self.combine_move(current_move, self.moveR)
+                combined_move = self.combine_move(combined_move, self.moveR)
             elif character == "F":
-                current_move = self.combine_move(current_move, self.moveF)
+                combined_move = self.combine_move(combined_move, self.moveF)
             elif character == "D":
-                current_move = self.combine_move(current_move, self.moveD)
+                combined_move = self.combine_move(combined_move, self.moveD)
             elif character == "L":
-                current_move = self.combine_move(current_move, self.moveL)
+                combined_move = self.combine_move(combined_move, self.moveL)
             elif character == "B":
-                current_move = self.combine_move(current_move, self.moveB)
-        self.fc = [self.fc[i] for i in current_move]
+                combined_move = self.combine_move(combined_move, self.moveB)
+        return combined_move
+
+    # This function executes a move sequence on the stored cube
+    def execute_move(self, string):
+        self.fc = [self.fc[i] for i in self.combine_move_string(string)]
 
 
 class CubeletCube:
