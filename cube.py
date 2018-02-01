@@ -442,6 +442,8 @@ def main():
         print(fc.facelet_to_string())
         move_string = ""
         user_input = input("Enter move string: ")
+        if user_input in ["quit", "q"]:
+            return 0
         for i in range(len(user_input)):
             # Support for 90° clockwise moves
             if user_input[i] in ["U", "R", "F", "D", "L", "B"]:
@@ -452,12 +454,12 @@ def main():
             # Support for 180° moves
             elif user_input[i] == "2":
                 move_string += user_input[i - 1]
-            # Support for spaces and commas in user input
-            elif user_input in [" ", ","]:
-                pass
-            else:
-                return 0
-        fc.execute_move(move_string)
+        # If user tells program to repeat, it will perform entered move sequence until returning to starting position
+        if "repeat" in user_input:
+            fc.calculate_degree(move_string)
+        # If not, execute the entered move string
+        else:
+            fc.execute_move(move_string)
 
 
 if __name__ == "__main__":
