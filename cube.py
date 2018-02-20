@@ -452,11 +452,6 @@ def main():
             # Support for 180° moves
             elif user_input[i] == "2":
                 move_string += user_input[i - 1]
-            # Support for spaces and commas in user input
-            elif user_input in [" ", ","]:
-                pass
-            else:
-                return 0
         fc.execute_move(move_string)
 
 
