@@ -425,7 +425,7 @@ def main():
     # Skips cube verification if state string is empty
     if state_string != "":
         # Checks that the cube is a valid facelet cube
-        is_valid = fc.string_to_facelet(state_string)
+        is_valid = fc.string_to_facelet(state_string.replace(" ", ""))
         if is_valid != "Valid cube.":
             print(is_valid)
             return 0
