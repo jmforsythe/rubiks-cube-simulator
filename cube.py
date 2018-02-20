@@ -442,6 +442,8 @@ def main():
         print(fc.facelet_to_string())
         move_string = ""
         user_input = input("Enter move string: ")
+        if user_input in ["quit", "q"]:
+            return 0
         for i in range(len(user_input)):
             # Support for 90° clockwise moves
             if user_input[i] in ["U", "R", "F", "D", "L", "B"]:
