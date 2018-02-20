@@ -101,24 +101,24 @@ corner_colours = [[Colour.U, Colour.R, Colour.F], [Colour.U, Colour.F, Colour.L]
                   [Colour.U, Colour.L, Colour.B], [Colour.U, Colour.B, Colour.R],
                   [Colour.D, Colour.F, Colour.R], [Colour.D, Colour.L, Colour.F],
                   [Colour.D, Colour.B, Colour.L], [Colour.D, Colour.R, Colour.B]
-                 ]
+                  ]
 corner_facelets = [[Facelets.U9, Facelets.R1, Facelets.F3], [Facelets.U7, Facelets.F1, Facelets.L3],
                    [Facelets.U1, Facelets.L1, Facelets.B3], [Facelets.U3, Facelets.B1, Facelets.R3],
                    [Facelets.D3, Facelets.F9, Facelets.R7], [Facelets.D1, Facelets.L9, Facelets.F7],
                    [Facelets.D7, Facelets.B9, Facelets.L7], [Facelets.D9, Facelets.R9, Facelets.B7]
-                  ]
+                   ]
 
 # These lists map each edge cubelet to its corresponding facelet colours
 edge_colours = [[Colour.U, Colour.R], [Colour.U, Colour.F], [Colour.U, Colour.L],
                 [Colour.U, Colour.B], [Colour.D, Colour.R], [Colour.D, Colour.F],
                 [Colour.D, Colour.L], [Colour.D, Colour.B], [Colour.F, Colour.R],
                 [Colour.F, Colour.L], [Colour.B, Colour.L], [Colour.B, Colour.R]
-               ]
+                ]
 edge_facelets = [[Facelets.U6, Facelets.R2], [Facelets.U8, Facelets.F2], [Facelets.U4, Facelets.L2],
                  [Facelets.U2, Facelets.B2], [Facelets.D6, Facelets.R8], [Facelets.D2, Facelets.F8],
                  [Facelets.D4, Facelets.L8], [Facelets.D8, Facelets.B8], [Facelets.F6, Facelets.R4],
                  [Facelets.F4, Facelets.L6], [Facelets.B6, Facelets.L4], [Facelets.B4, Facelets.R6]
-                ]
+                 ]
 
 
 class FaceletCube:
@@ -205,7 +205,8 @@ class FaceletCube:
 
             # Finds which side of the cubelet is either the U or D face, which we start assigning from
             for orientation in range(3):
-                if self.fc[faces_of_cubelet[orientation]] == Colour.U or self.fc[faces_of_cubelet[orientation]] == Colour.D:
+                if (self.fc[faces_of_cubelet[orientation]] == Colour.U or
+                        self.fc[faces_of_cubelet[orientation]] == Colour.D):
                     break
 
             # Cycles through the other sides of the cubelet in a clockwise order, in order to identify the cubelet
@@ -225,11 +226,13 @@ class FaceletCube:
         # Cycle through each edge of our facelet cube
         for edge in Edges:
             for test_edge in Edges:
-                if self.fc[edge_facelets[edge][0]] == edge_colours[test_edge][0] and self.fc[edge_facelets[edge][1]] == edge_colours[test_edge][1]:
+                if (self.fc[edge_facelets[edge][0]] == edge_colours[test_edge][0] and
+                        self.fc[edge_facelets[edge][1]] == edge_colours[test_edge][1]):
                     cc.edge_positions[edge] = test_edge
                     cc.edge_orientation[edge] = 0
                     break
-                if self.fc[edge_facelets[edge][0]] == edge_colours[test_edge][1] and self.fc[edge_facelets[edge][1]] == edge_colours[test_edge][0]:
+                if (self.fc[edge_facelets[edge][0]] == edge_colours[test_edge][1] and
+                        self.fc[edge_facelets[edge][1]] == edge_colours[test_edge][0]):
                     cc.edge_positions[edge] = test_edge
                     cc.edge_orientation[edge] = 1
                     break
@@ -336,12 +339,14 @@ class CubeletCube:
             position = self.corner_positions[corner]
             orientation = self.corner_orientation[corner]
             for face_of_cubelet in range(3):
-                fc.fc[corner_facelets[corner][(face_of_cubelet + orientation) % 3]] = corner_colours[position][face_of_cubelet]
+                fc.fc[corner_facelets[corner][(face_of_cubelet + orientation) % 3]] = \
+                    corner_colours[position][face_of_cubelet]
         for edge in Edges:
             position = self.edge_positions[edge]
             orientation = self.edge_orientation[edge]
             for face_of_cubelet in range(2):
-                fc.fc[edge_facelets[edge][(face_of_cubelet + orientation) % 2]] = edge_colours[position][face_of_cubelet]
+                fc.fc[edge_facelets[edge][(face_of_cubelet + orientation) % 2]] = \
+                    edge_colours[position][face_of_cubelet]
         return fc
 
     # Converts from cubelet representation to a string that the user can understand
