@@ -17,12 +17,11 @@ class NetDisplay(QWidget):
 
         positions = [(i, j) for i in range(9) for j in range(12)]
         for position in positions:
-            if (position[0] in range(3) or position[0] in range(6, 9)) and position[1] not in range(3, 6):
-                continue
-            frame = QFrame(self)
-            frame.col = QColor(235, 235, 235)
-            frame.setStyleSheet("background-color: %s; margin:10px; border:3px solid rgb(20,20,20); " % frame.col.name())
-            grid.addWidget(frame, *position)
+            if position[0] in range (3, 6) or position[1] in range(3, 6):
+                frame = QFrame(self)
+                frame.col = QColor(235, 235, 235)
+                frame.setStyleSheet("background-color: %s; margin:10px; border:3px solid rgb(20,20,20); " % frame.col.name())
+                grid.addWidget(frame, *position)
 
         string_converter = [0, 1, 2,
                             3, 4, 5,
