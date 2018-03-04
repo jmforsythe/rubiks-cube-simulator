@@ -5,13 +5,13 @@ from PyQt5.QtGui import QColor
 width = 60
 
 
-class Example(QWidget):
+class NetDisplay(QWidget):
     def __init__(self, facelet_string):
         super().__init__()
 
-        self.initUI(facelet_string.replace(" ", ""))
+        self.init_ui(facelet_string.replace(" ", ""))
 
-    def initUI(self, facelet_string):
+    def init_ui(self, facelet_string):
         grid = QGridLayout()
         self.setLayout(grid)
 
@@ -61,12 +61,5 @@ class Example(QWidget):
 
 def launch(facelet_string):
     app = QApplication(sys.argv)
-    ex = Example(facelet_string)
+    net_display = NetDisplay(facelet_string)
     app.exec_()
-
-
-if __name__ == '__main__':
-    facelet_string = "LBBLURRRU FUDFRRLDR DFLFFDRLD FFFLDRDDB BUFBLUBDU LUUBBLUBR".replace(" ", "")
-    app = QApplication(sys.argv)
-    ex = Example(facelet_string)
-    sys.exit(app.exec_())
