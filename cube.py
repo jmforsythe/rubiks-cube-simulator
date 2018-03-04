@@ -1,4 +1,5 @@
 from enum import IntEnum
+import net_display
 
 
 class Colour(IntEnum):
@@ -461,6 +462,8 @@ def main():
         user_input = input("Enter move string: ")
         if user_input in ["quit", "q"]:
             return 0
+        if user_input == "display":
+            net_display.launch(fc.facelet_to_string())
         for i in range(len(user_input)):
             # Support for 90° clockwise moves
             if user_input[i] in ["U", "R", "F", "D", "L", "B"]:
