@@ -24,10 +24,6 @@ class NetDisplay(QWidget):
             frame.setStyleSheet("background-color: %s; margin:10px; border:3px solid rgb(20,20,20); " % frame.col.name())
             grid.addWidget(frame, *position)
 
-        frame = grid.itemAt(53).widget()
-        frame.col = QColor(255,0,0)
-        frame.setStyleSheet("background-color: %s;" % frame.col.name())
-
         string_converter = [0, 1, 2,
                             3, 4, 5,
                             6, 7, 8,
