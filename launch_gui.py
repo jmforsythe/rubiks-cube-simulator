@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QGridLayout, QPushButton,
 from PyQt5.QtGui import QColor
 from facelet_cube import FaceletCube
 from cubelet_cube import CubeletCube
+from enums_and_defs import face_colours
 
 # Default width of facelet squares (in pixels) for drawing the window
 width = 60
@@ -83,17 +84,17 @@ class NetDisplay(QWidget):
         for facelet in range(54):
             frame = self.grid.itemAt(facelet).widget()
             if facelet_string[facelet] == "U":
-                frame.col = QColor(255, 255, 255)  # white
+                frame.col = face_colours[0]
             if facelet_string[facelet] == "R":
-                frame.col = QColor(0, 0, 255)  # blue
+                frame.col = face_colours[1]
             if facelet_string[facelet] == "F":
-                frame.col = QColor(255, 0, 0)  # red
+                frame.col = face_colours[2]
             if facelet_string[facelet] == "D":
-                frame.col = QColor(255, 255, 0)  # yellow
+                frame.col = face_colours[3]
             if facelet_string[facelet] == "L":
-                frame.col = QColor(0, 255, 0)  # green
+                frame.col = face_colours[4]
             if facelet_string[facelet] == "B":
-                frame.col = QColor(255, 165, 0)  # orange
+                frame.col = face_colours[5]
             frame.setStyleSheet("background-color: %s; margin:0px; border:2px solid rgb(20,20,20);" % frame.col.name())
 
     @staticmethod
