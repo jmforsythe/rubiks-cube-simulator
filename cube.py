@@ -374,7 +374,6 @@ class CubeletCube:
 
     # Checks that the currently stored cubelet cube is in a valid state
     def is_valid_state(self):
-
         # Checks that there is exactly one case of each edge cubelet in the cubelet cube
         edge_count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         # Counts each occurrence of each edge
@@ -383,7 +382,7 @@ class CubeletCube:
         # Checks the each corner occurs exactly once
         for edge in Edges:
             if edge_count[edge] != 1:
-                return 'Error: Not all edges exist.'
+                return "Error: Not all edges exist."
 
         # Checks that there is exactly one case of each corner cubelet in the cubelet cube
         corner_count = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -393,19 +392,19 @@ class CubeletCube:
         # Checks the each corner occurs exactly once
         for corner in Corners:
             if corner_count[corner] != 1:
-                return 'Error: Not all corners exist.'
+                return "Error: Not all corners exist."
 
         edge_twist = 0
         for edge in Edges:
             edge_twist += self.edge_orientation[edge]
         if edge_twist % 2 != 0:
-            return 'Error: Total edge twist is wrong.'
+            return "Error: Total edge twist is wrong."
 
         corner_twist = 0
         for corner in Corners:
             corner_twist += self.corner_orientation[corner]
         if corner_twist % 3 != 0:
-            return 'Error: Total corner twist is wrong.'
+            return "Error: Total corner twist is wrong."
 
         # Parity of a cube refers to whether the swaps required to make that cube from a solved cube is even or odd
         # The total parity must always be even, either from having edge and corner parity be both even or both odd
@@ -422,12 +421,12 @@ class CubeletCube:
         corner_parity = 0
         for corner in range(Corners.DRB, Corners.URF, -1):
             for test_corner in range(corner - 1, Corners.URF - 1, -1):
-                if self.corner_positions[test_corner] > self.edge_positions[corner]:
+                if self.corner_positions[test_corner] > self.corner_positions[corner]:
                     corner_parity += 1
         corner_parity = corner_parity % 2
 
         if edge_parity != corner_parity:
-            return 'Error: Wrong edge and corner parity.'
+            return "Error: Wrong edge and corner parity."
 
         return "Valid cube."
 
