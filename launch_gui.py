@@ -125,33 +125,6 @@ class NetDisplay(QWidget):
         degree_popup = QMessageBox.question(self, 'Degree Calculated', str(degree), QMessageBox.Ok)
 
 def main():
-    """
-    # The main program loop
-    while True:
-        print(fc.facelet_to_string())
-        move_string = ""
-        user_input = input("Enter move string: ")
-        if user_input in ["quit", "q"]:
-            return 0
-        if user_input == "display":
-            net_display.launch(fc.facelet_to_string())
-        for i in range(len(user_input)):
-            # Support for 90° clockwise moves
-            if user_input[i] in ["U", "R", "F", "D", "L", "B"]:
-                move_string += user_input[i]
-            # Support for 90° anticlockwise moves
-            elif user_input[i] == "\'":
-                move_string += user_input[i - 1] * 2
-            # Support for 180° moves
-            elif user_input[i] == "2":
-                move_string += user_input[i - 1]
-        # If user tells program to repeat, it will perform entered move sequence until returning to starting position
-        if "repeat" in user_input:
-            print("This move sequence takes %d repetitions to repeat itself" % fc.calculate_degree(move_string))
-        # If not, execute the entered move string
-        else:
-            fc.execute_move(move_string)
-    """
     app = QApplication(sys.argv)
     net_display = NetDisplay()
     sys.exit(app.exec_())
