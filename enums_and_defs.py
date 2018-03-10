@@ -1,5 +1,5 @@
 from enum import IntEnum
-
+from PyQt5.QtGui import QColor
 
 class Colour(IntEnum):
     # This class assigns numbers to the facelets of the cube for easier representation
@@ -119,3 +119,11 @@ edge_facelets = [[Facelets.U6, Facelets.R2], [Facelets.U8, Facelets.F2], [Facele
                  [Facelets.D4, Facelets.L8], [Facelets.D8, Facelets.B8], [Facelets.F6, Facelets.R4],
                  [Facelets.F4, Facelets.L6], [Facelets.B6, Facelets.L4], [Facelets.B4, Facelets.R6]
                  ]
+
+face_colours = [QColor(255, 255, 255), # white
+                QColor(0, 0, 255), # blue,
+                QColor(255, 0, 0), # red,
+                QColor(255, 255, 0), # yellow,
+                QColor(0, 255, 0), # green
+                QColor(255, 165, 0) # orange
+                ]
