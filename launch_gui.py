@@ -59,6 +59,12 @@ class NetDisplay(QWidget):
         calculate_degree.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
         self.grid.addWidget(calculate_degree, 8, 1, 1, 2)
 
+        reset_cube = QPushButton("Reset")
+        reset_cube.clicked.connect(self.reset)
+        reset_cube.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.grid.addWidget(reset_cube, 8, 6, 1, 2)
+
+        # Sets the initial cube to be a solved cube
         self.modify(self.facelet_string)
 
         # Defines the size of the window and displays it
@@ -124,6 +130,11 @@ class NetDisplay(QWidget):
         text_box = self.move_entry.toPlainText()
         degree = self.fc.calculate_degree(self.sanitise_move(text_box))
         degree_popup = QMessageBox.question(self, 'Degree Calculated', str(degree), QMessageBox.Ok)
+
+    def reset(self):
+        self.fc.string_to_facelet("UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB")
+        self.modify(self.fc.facelet_to_string())
+
 
 def main():
     app = QApplication(sys.argv)
