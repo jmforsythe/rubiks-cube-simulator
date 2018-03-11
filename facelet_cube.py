@@ -47,26 +47,35 @@ class FaceletCube:
 
     # Assigns values to each facelet by interpreting an input string
     def string_to_facelet(self, string):
-        # We will have a running count for each face colour in order to verify that there are 9 facelets of each colour
-        count = [0, 0, 0, 0, 0, 0]
+        # Converts each character from the string into the appropriate facelet
         for facelet in range(len(string)):
             if string[facelet] == "U":
                 self.fc[facelet] = Colour.U
-                count[Colour.U] += 1
             elif string[facelet] == "R":
                 self.fc[facelet] = Colour.R
-                count[Colour.R] += 1
             elif string[facelet] == "F":
                 self.fc[facelet] = Colour.F
-                count[Colour.F] += 1
             elif string[facelet] == "D":
                 self.fc[facelet] = Colour.D
-                count[Colour.D] += 1
             elif string[facelet] == "L":
                 self.fc[facelet] = Colour.L
-                count[Colour.L] += 1
             elif string[facelet] == "B":
                 self.fc[facelet] = Colour.B
+
+    def verify(self):
+        count = [0, 0, 0, 0, 0, 0]
+        for facelet in self.fc:
+            if facelet == Colour.U:
+                count[Colour.U] += 1
+            elif facelet == Colour.R:
+                count[Colour.R] += 1
+            elif facelet == Colour.F:
+                count[Colour.F] += 1
+            elif facelet == Colour.D:
+                count[Colour.D] += 1
+            elif facelet == Colour.L:
+                count[Colour.L] += 1
+            elif facelet == Colour.B:
                 count[Colour.B] += 1
         # Checks that each of the counts equals 9
         if all(i == 9 for i in count):

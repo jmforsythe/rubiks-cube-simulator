@@ -8,11 +8,12 @@ def main():
 
     # This defines the initial state of the cube
     state_string = input("Enter initial cube state (leave blank for solved cube): ")
+    fc.string_to_facelet(state_string.replace(" ", ""))
 
     # Skips cube verification if state string is empty
     if state_string != "":
         # Checks that the cube is a valid facelet cube
-        is_valid = fc.string_to_facelet(state_string.replace(" ", ""))
+        is_valid = fc.verify()
         if is_valid != "Valid cube.":
             print(is_valid)
             return 0
