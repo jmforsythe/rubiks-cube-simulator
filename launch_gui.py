@@ -1,13 +1,14 @@
 import sys
 from PyQt5.QtWidgets import (QWidget, QApplication, QGridLayout, QPushButton,
                              QFrame, QSizePolicy, QTextEdit, QMessageBox)
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QIcon
 from facelet_cube import FaceletCube
 from cubelet_cube import CubeletCube
 from enums_and_defs import face_colours
 
 # Default width of facelet squares (in pixels) for drawing the window
 width = 60
+window_icon = "pexels-photo.jpg"
 
 
 # Define the class that will define our program window, inheriting from the QWidget class
@@ -69,6 +70,7 @@ class NetDisplay(QWidget):
 
         # Defines the size of the window and displays it
         self.setWindowTitle("Rubik's Cube Simulator")
+        self.setWindowIcon(QIcon(window_icon))
         self.setGeometry(300, 300, width * 12 + 100, width * 9 + 100)
         self.show()
 
@@ -129,7 +131,11 @@ class NetDisplay(QWidget):
     def calculate_degree(self):
         text_box = self.move_entry.toPlainText()
         degree = self.fc.calculate_degree(self.sanitise_move(text_box))
-        degree_popup = QMessageBox.question(self, 'Degree Calculated', str(degree), QMessageBox.Ok)
+        degree_popup = QMessageBox()
+        degree_popup.setText("Degree: " + str(degree))
+        degree_popup.setWindowTitle("Degree Calculator Output")
+        degree_popup.setWindowIcon(QIcon(window_icon))
+        degree_popup.exec()
 
     def reset(self):
         self.fc.string_to_facelet("UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB")
