@@ -63,7 +63,12 @@ class NetDisplay(QWidget):
         reset_cube = QPushButton("Reset")
         reset_cube.clicked.connect(self.reset)
         reset_cube.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(reset_cube, 8, 6, 1, 2)
+        self.grid.addWidget(reset_cube, 8, 6, 1, 1)
+
+        verify_cube = QPushButton("Verify")
+        verify_cube.clicked.connect(self.verify)
+        verify_cube.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.grid.addWidget(verify_cube, 8, 7, 1, 1)
 
         # Sets the initial cube to be a solved cube
         self.modify(self.facelet_string)
@@ -140,6 +145,29 @@ class NetDisplay(QWidget):
     def reset(self):
         self.fc.string_to_facelet("UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB")
         self.modify(self.fc.facelet_to_string())
+
+    def verify(self):
+        verify_popup = QMessageBox()
+        verify_popup.setIcon(QMessageBox.Information)
+
+        output_text = "Valid Cube."
+        # Checks that the cube is a valid facelet cube
+        is_valid = self.fc.verify()
+        if is_valid != "Valid cube.":
+            output_text = is_valid
+            verify_popup.setIcon(QMessageBox.Warning)
+        else:
+            # Checks that the cube is a valid cubelet cube
+            cc = self.fc.facelet_to_cubelet()
+            is_valid = cc.is_valid_state()
+            if is_valid != "Valid cube.":
+                output_text = is_valid
+                verify_popup.setIcon(QMessageBox.Warning)
+
+        verify_popup.setText(output_text)
+        verify_popup.setWindowTitle("Cube Verification Output")
+        verify_popup.setWindowIcon(QIcon(window_icon))
+        verify_popup.exec()
 
 
 def main():
