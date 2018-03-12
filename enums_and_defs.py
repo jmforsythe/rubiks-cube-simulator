@@ -127,3 +127,13 @@ face_colours = [QColor(255, 255, 255), # white
                 QColor(0, 255, 0), # green
                 QColor(255, 165, 0) # orange
                 ]
+
+face_colours_rgb = ["white",
+                    "blue",
+                    "red",
+                    "yellow",
+                    "green",
+                    "orange"
+                    ]
+
+solved_cube = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
