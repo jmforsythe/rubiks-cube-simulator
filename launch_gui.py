@@ -1,10 +1,9 @@
 import sys
-from PyQt5.QtWidgets import (QWidget, QApplication, QGridLayout, QPushButton,
+from PyQt5.QtWidgets import (QWidget, QApplication, QGridLayout, QPushButton, QButtonGroup,
                              QFrame, QSizePolicy, QTextEdit, QMessageBox)
 from PyQt5.QtGui import QColor, QIcon
 from facelet_cube import FaceletCube
-from cubelet_cube import CubeletCube
-from enums_and_defs import face_colours
+from enums_and_defs import face_colours, face_colours_rgb, solved_cube
 
 # Default width of facelet squares (in pixels) for drawing the window
 width = 60
@@ -27,15 +26,27 @@ class NetDisplay(QWidget):
         self.grid = QGridLayout()
         self.setLayout(self.grid)
 
+        string_converter = [0, 1, 2,
+                            3, 4, 5,
+                            6, 7, 8,
+                            36, 37, 38, 18, 19, 20, 9, 10, 11, 45, 46, 47,
+                            39, 40, 41, 21, 22, 23, 12, 13, 14, 48, 49, 50,
+                            42, 43, 44, 24, 25, 26, 15, 16, 17, 51, 52, 53,
+                            27, 28, 29,
+                            30, 31, 32,
+                            33, 34, 35]
         # Inserts QFrames into the necessary grid positions in order to display the cube as a 2D net
         positions = [(i, j) for i in range(9) for j in range(12)]
         for position in positions:
             if position[0] in range(3, 6) or position[1] in range(3, 6):
-                frame = QFrame(self)
-                frame.col = QColor(235, 235, 235)
-                frame.setStyleSheet("background-color: %s; margin:10px; border:3px solid rgb(20,20,20); "
-                                    % frame.col.name())
-                self.grid.addWidget(frame, *position)
+                facelet = QPushButton(str(string_converter.pop(0)), self)
+                facelet.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+                facelet.col = QColor(235, 235, 235)
+                facelet.clicked.connect(self.change_facelet)
+                facelet.name = position
+                facelet.setStyleSheet("background-color: %s; margin:10px; border:3px solid rgb(20,20,20); "
+                                    % facelet.col.name())
+                self.grid.addWidget(facelet, *position)
 
         move_list = ("U", "R", "F", "D", "L", "B")
         move_button_positions = ((0, 8), (1, 9), (1, 8), (2, 8), (1, 7), (1, 10))
@@ -44,6 +55,19 @@ class NetDisplay(QWidget):
             move_button.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
             move_button.clicked.connect(self.execute_move)
             self.grid.addWidget(move_button, *move_button_positions[i])
+
+        self.current_colour = ""
+        colour_picker_positions = ((7, 9), (7, 10), (7, 11), (8, 9), (8, 10), (8, 11))
+        colour_picker_group = QButtonGroup(self)
+        for i in range(6):
+            colour_picker = QPushButton(move_list[i])
+            colour_picker.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+            colour_picker.setCheckable(True)
+            colour_picker.setStyleSheet("QPushButton { background-color: %s; border: 1px solid black}"
+                                        "QPushButton:checked { border: 3px solid black }" % face_colours_rgb[i])
+            colour_picker.clicked.connect(self.assign_colour)
+            colour_picker_group.addButton(colour_picker)
+            self.grid.addWidget(colour_picker, *colour_picker_positions[i])
 
         self.move_entry = QTextEdit(self)
         self.move_entry.setPlaceholderText("Enter move string here")
@@ -143,7 +167,7 @@ class NetDisplay(QWidget):
         degree_popup.exec()
 
     def reset(self):
-        self.fc.string_to_facelet("UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB")
+        self.fc.string_to_facelet(solved_cube)
         self.modify(self.fc.facelet_to_string())
 
     def verify(self):
@@ -168,6 +192,17 @@ class NetDisplay(QWidget):
         verify_popup.setWindowTitle("Cube Verification Output")
         verify_popup.setWindowIcon(QIcon(window_icon))
         verify_popup.exec()
+
+    def assign_colour(self):
+        self.current_colour = self.sender().text()
+
+    def change_facelet(self):
+        index = int(self.sender().text())
+        if self.current_colour != "":
+            facelet_string = self.fc.facelet_to_string().replace(" ", "")
+            facelet_string = facelet_string[:index] + self.current_colour + facelet_string[index+1:]
+            self.fc.string_to_facelet(facelet_string)
+            self.modify(self.fc.facelet_to_string())
 
 
 def main():
