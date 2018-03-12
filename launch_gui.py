@@ -44,8 +44,6 @@ class NetDisplay(QWidget):
                 facelet.col = QColor(235, 235, 235)
                 facelet.clicked.connect(self.change_facelet)
                 facelet.name = position
-                facelet.setStyleSheet("background-color: %s; margin:10px; border:3px solid rgb(20,20,20); "
-                                    % facelet.col.name())
                 self.grid.addWidget(facelet, *position)
 
         move_list = ("U", "R", "F", "D", "L", "B")
@@ -132,7 +130,8 @@ class NetDisplay(QWidget):
                 frame.col = face_colours[4]
             if facelet_string[facelet] == "B":
                 frame.col = face_colours[5]
-            frame.setStyleSheet("background-color: %s; margin:0px; border:2px solid rgb(20,20,20);" % frame.col.name())
+            frame.setStyleSheet("background-color: %s; color: %s; margin:0px; border:2px solid rgb(20,20,20);"
+                                % (frame.col.name(), frame.col.name()))
 
     @staticmethod
     def sanitise_move(string):
@@ -198,7 +197,7 @@ class NetDisplay(QWidget):
 
     def change_facelet(self):
         index = int(self.sender().text())
-        if self.current_colour != "":
+        if self.current_colour != "" and index not in (4, 13, 22, 31, 40, 49):
             facelet_string = self.fc.facelet_to_string().replace(" ", "")
             facelet_string = facelet_string[:index] + self.current_colour + facelet_string[index+1:]
             self.fc.string_to_facelet(facelet_string)
