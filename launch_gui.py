@@ -55,7 +55,7 @@ class NetDisplay(QWidget):
             self.grid.addWidget(move_button, *move_button_positions[i])
 
         self.current_colour = ""
-        colour_picker_positions = ((7, 9), (7, 10), (7, 11), (8, 9), (8, 10), (8, 11))
+        colour_picker_positions = ((7, 0), (7, 1), (7, 2), (8, 0), (8, 1), (8, 2))
         colour_picker_group = QButtonGroup(self)
         for i in range(6):
             colour_picker = QPushButton(move_list[i])
@@ -70,27 +70,33 @@ class NetDisplay(QWidget):
         self.move_entry = QTextEdit(self)
         self.move_entry.setPlaceholderText("Enter move string here")
         self.move_entry.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(self.move_entry, 6, 0, 2, 3)
+        self.grid.addWidget(self.move_entry, 0, 0, 2, 3)
 
         execute_move = QPushButton("Execute")
         execute_move.clicked.connect(self.execute_move)
         execute_move.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(execute_move, 8, 0, 1, 1)
+        self.grid.addWidget(execute_move, 2, 0, 1, 1)
 
         calculate_degree = QPushButton("Calculate Degree")
         calculate_degree.clicked.connect(self.calculate_degree)
         calculate_degree.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(calculate_degree, 8, 1, 1, 2)
+        self.grid.addWidget(calculate_degree, 2, 1, 1, 2)
 
         reset_cube = QPushButton("Reset")
         reset_cube.clicked.connect(self.reset)
         reset_cube.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(reset_cube, 8, 6, 1, 1)
+        self.grid.addWidget(reset_cube, 6, 0, 1, 1)
 
         verify_cube = QPushButton("Verify")
         verify_cube.clicked.connect(self.verify)
         verify_cube.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(verify_cube, 8, 7, 1, 1)
+        self.grid.addWidget(verify_cube, 6, 2, 1, 1)
+
+        self.output_textbox = QTextEdit(self)
+        self.output_textbox.setReadOnly(True)
+        self.output_textbox.setPlaceholderText("Program Output")
+        self.output_textbox.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.grid.addWidget(self.output_textbox, 6, 6, 3, 6)
 
         # Sets the initial cube to be a solved cube
         self.modify(self.facelet_string)
@@ -159,38 +165,26 @@ class NetDisplay(QWidget):
     def calculate_degree(self):
         text_box = self.move_entry.toPlainText()
         degree = self.fc.calculate_degree(self.sanitise_move(text_box))
-        degree_popup = QMessageBox()
-        degree_popup.setText("Degree: " + str(degree))
-        degree_popup.setWindowTitle("Degree Calculator Output")
-        degree_popup.setWindowIcon(QIcon(window_icon))
-        degree_popup.exec()
+        self.output_textbox.append(
+            "Degree of algorithm <font color=\"red\">%s</font> is <b>%s</b>" % (text_box, degree))
 
     def reset(self):
         self.fc.string_to_facelet(solved_cube)
         self.modify(self.fc.facelet_to_string())
 
     def verify(self):
-        verify_popup = QMessageBox()
-        verify_popup.setIcon(QMessageBox.Information)
-
         output_text = "Valid Cube."
         # Checks that the cube is a valid facelet cube
         is_valid = self.fc.verify()
         if is_valid != "Valid cube.":
             output_text = is_valid
-            verify_popup.setIcon(QMessageBox.Warning)
         else:
             # Checks that the cube is a valid cubelet cube
             cc = self.fc.facelet_to_cubelet()
             is_valid = cc.is_valid_state()
             if is_valid != "Valid cube.":
                 output_text = is_valid
-                verify_popup.setIcon(QMessageBox.Warning)
-
-        verify_popup.setText(output_text)
-        verify_popup.setWindowTitle("Cube Verification Output")
-        verify_popup.setWindowIcon(QIcon(window_icon))
-        verify_popup.exec()
+        self.output_textbox.append(output_text)
 
     def assign_colour(self):
         self.current_colour = self.sender().text()
