@@ -1,9 +1,9 @@
 import sys
 from PyQt5.QtWidgets import (QWidget, QApplication, QGridLayout, QPushButton, QButtonGroup,
-                             QFrame, QSizePolicy, QTextEdit, QMessageBox)
+                             QSizePolicy, QTextEdit)
 from PyQt5.QtGui import QColor, QIcon
 from facelet_cube import FaceletCube
-from enums_and_defs import face_colours, face_colours_rgb, solved_cube
+from enums_and_defs import face_colours_rgb, solved_cube
 
 # Default width of facelet squares (in pixels) for drawing the window
 width = 60
@@ -55,7 +55,7 @@ class NetDisplay(QWidget):
             self.grid.addWidget(move_button, *move_button_positions[i])
 
         self.current_colour = ""
-        colour_picker_positions = ((7, 0), (7, 1), (7, 2), (8, 0), (8, 1), (8, 2))
+        colour_picker_positions = ((7, 9), (7, 10), (7, 11), (8, 9), (8, 10), (8, 11))
         colour_picker_group = QButtonGroup(self)
         for i in range(6):
             colour_picker = QPushButton(move_list[i])
@@ -85,18 +85,23 @@ class NetDisplay(QWidget):
         reset_cube = QPushButton("Reset")
         reset_cube.clicked.connect(self.reset)
         reset_cube.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(reset_cube, 6, 0, 1, 1)
+        self.grid.addWidget(reset_cube, 7, 7, 1, 1)
 
         verify_cube = QPushButton("Verify")
         verify_cube.clicked.connect(self.verify)
         verify_cube.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(verify_cube, 6, 2, 1, 1)
+        self.grid.addWidget(verify_cube, 7, 8, 1, 1)
+
+        solve_cube = QPushButton("Solve")
+        solve_cube.clicked.connect(self.solve)
+        solve_cube.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+        self.grid.addWidget(solve_cube, 8, 7, 1, 2)
 
         self.output_textbox = QTextEdit(self)
         self.output_textbox.setReadOnly(True)
         self.output_textbox.setPlaceholderText("Program Output")
         self.output_textbox.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-        self.grid.addWidget(self.output_textbox, 6, 6, 3, 6)
+        self.grid.addWidget(self.output_textbox, 6, 0, 3, 3)
 
         # Sets the initial cube to be a solved cube
         self.modify(self.facelet_string)
@@ -125,19 +130,19 @@ class NetDisplay(QWidget):
         for facelet in range(54):
             frame = self.grid.itemAt(facelet).widget()
             if facelet_string[facelet] == "U":
-                frame.col = face_colours[0]
+                frame.col = face_colours_rgb[0]
             if facelet_string[facelet] == "R":
-                frame.col = face_colours[1]
+                frame.col = face_colours_rgb[1]
             if facelet_string[facelet] == "F":
-                frame.col = face_colours[2]
+                frame.col = face_colours_rgb[2]
             if facelet_string[facelet] == "D":
-                frame.col = face_colours[3]
+                frame.col = face_colours_rgb[3]
             if facelet_string[facelet] == "L":
-                frame.col = face_colours[4]
+                frame.col = face_colours_rgb[4]
             if facelet_string[facelet] == "B":
-                frame.col = face_colours[5]
+                frame.col = face_colours_rgb[5]
             frame.setStyleSheet("background-color: %s; color: %s; margin:0px; border:2px solid rgb(20,20,20);"
-                                % (frame.col.name(), frame.col.name()))
+                                % (frame.col, frame.col))
 
     @staticmethod
     def sanitise_move(string):
@@ -196,6 +201,13 @@ class NetDisplay(QWidget):
             facelet_string = facelet_string[:index] + self.current_colour + facelet_string[index+1:]
             self.fc.string_to_facelet(facelet_string)
             self.modify(self.fc.facelet_to_string())
+
+    def solve(self):
+        if self.fc.verify() != self.fc.facelet_to_cubelet().is_valid_state():
+            self.output_textbox.append("Cannot solve cube:")
+            self.verify()
+        else:
+            self.output_textbox.append("Solved.")
 
 
 def main():

@@ -120,19 +120,11 @@ edge_facelets = [[Facelets.U6, Facelets.R2], [Facelets.U8, Facelets.F2], [Facele
                  [Facelets.F4, Facelets.L6], [Facelets.B6, Facelets.L4], [Facelets.B4, Facelets.R6]
                  ]
 
-face_colours = [QColor(255, 255, 255), # white
-                QColor(0, 0, 255), # blue,
-                QColor(255, 0, 0), # red,
-                QColor(255, 255, 0), # yellow,
-                QColor(0, 255, 0), # green
-                QColor(255, 165, 0) # orange
-                ]
-
 face_colours_rgb = ["white",
-                    "blue",
+                    QColor(0, 100, 255).name(),
                     "red",
                     "yellow",
-                    "green",
+                    "lime",
                     "orange"
                     ]
 
