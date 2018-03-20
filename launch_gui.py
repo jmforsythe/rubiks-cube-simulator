@@ -3,11 +3,18 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QGridLayout, QPushButton, QB
                              QSizePolicy, QTextEdit)
 from PyQt5.QtGui import QColor, QIcon
 from facelet_cube import FaceletCube
-from enums_and_defs import face_colours_rgb, solved_cube
+from enums_and_defs import solved_cube
 
 # Default width of facelet squares (in pixels) for drawing the window
 width = 60
 window_icon = "pexels-photo.jpg"
+face_colours_rgb = ["white",
+                    QColor(0, 100, 255).name(),
+                    "red",
+                    "yellow",
+                    "lime",
+                    "orange"
+                    ]
 
 
 # Define the class that will define our program window, inheriting from the QWidget class
