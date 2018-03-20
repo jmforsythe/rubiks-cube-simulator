@@ -1,5 +1,5 @@
 from enum import IntEnum
-from PyQt5.QtGui import QColor
+
 
 class Colour(IntEnum):
     # This class assigns numbers to the facelets of the cube for easier representation
