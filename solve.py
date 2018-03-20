@@ -77,14 +77,14 @@ def solve_pll(facelet_string):
 def solve_cube(facelet_string):
     solution_string = ""
     if not cross_solved(facelet_string):
-        solution_string.append(solve_cross(facelet_string))
+        solution_string += solve_cross(facelet_string)
     if not bottom_corners_solved(facelet_string):
-        solution_string.append(solve_bottom_corners(facelet_string))
+        solution_string += solve_bottom_corners(facelet_string)
     if not middle_layer_solved(facelet_string):
-        solution_string.append(solve_middle_layer(facelet_string))
+        solution_string += solve_middle_layer(facelet_string)
     if not oll_solved(facelet_string):
-        solution_string.append(solve_oll(facelet_string))
+        solution_string += solve_oll(facelet_string)
     if not pll_solved(facelet_string):
-        solution_string.append(solve_pll(facelet_string))
+        solution_string += solve_pll(facelet_string)
     return solution_string
 
