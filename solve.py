@@ -6,29 +6,23 @@ solved_fc.string_to_facelet(solved_cube)
 solved_cc = solved_fc.facelet_to_cubelet()
 
 
-def cross_solved(facelet_string):
-    fc = facelet_cube.FaceletCube()
-    fc.string_to_facelet(facelet_string)
+def cross_solved(fc):
     cc = fc.facelet_to_cubelet()
     if (cc.edge_positions[4:8] == solved_cc.edge_positions[4:8] and
-        cc.edge_orientation[4:8] == solved_cc.edge_orientation[4:8]):
+            cc.edge_orientation[4:8] == solved_cc.edge_orientation[4:8]):
         return True
     return False
 
 
-def bottom_corners_solved(facelet_string):
-    fc = facelet_cube.FaceletCube()
-    fc.string_to_facelet(facelet_string)
+def bottom_corners_solved(fc):
     cc = fc.facelet_to_cubelet()
     if (cc.corner_positions[4:8] == solved_cc.corner_positions[4:8] and
-        cc.corner_orientation[4:8] == solved_cc.corner_orientation[4:8]):
+            cc.corner_orientation[4:8] == solved_cc.corner_orientation[4:8]):
         return True
     return False
 
 
-def middle_layer_solved(facelet_string):
-    fc = facelet_cube.FaceletCube()
-    fc.string_to_facelet(facelet_string)
+def middle_layer_solved(fc):
     cc = fc.facelet_to_cubelet()
     if (cc.edge_positions[8:12] == solved_cc.edge_positions[8:12] and
         cc.edge_orientation[8:12] == solved_cc.edge_orientation[8:12]):
@@ -36,15 +30,13 @@ def middle_layer_solved(facelet_string):
     return False
 
 
-def oll_solved(facelet_string):
-    if facelet_string[0:9] == solved_cube[0:9]:
+def oll_solved(fc):
+    if fc.fc[0:9] == solved_fc.fc[0:9]:
         return True
     return False
 
 
-def pll_solved(facelet_string):
-    fc = facelet_cube.FaceletCube()
-    fc.string_to_facelet(facelet_string)
+def pll_solved(fc):
     cc = fc.facelet_to_cubelet()
     if (cc.corner_positions[0:4] == solved_cc.corner_positions[0:4] and
         cc.corner_orientation[0:4] == solved_cc.corner_orientation[0:4] and
@@ -54,37 +46,57 @@ def pll_solved(facelet_string):
     return False
 
 
-def solve_cross(facelet_string):
+def solve_cross(fc):
     return ""
 
 
-def solve_bottom_corners(facelet_string):
+def solve_bottom_corners(fc):
     return ""
 
 
-def solve_middle_layer(facelet_string):
+def solve_middle_layer(fc):
     return ""
 
 
-def solve_oll(facelet_string):
-    return ""
+def oll_cross(fc):
+    move = "FRUR'U'F'"
+    if ([fc.fc[1], fc.fc[3:6], fc.fc[7]] ==
+            [solved_fc.fc[1], solved_fc.fc[3:6], solved_fc.fc[7]]):  # cross case
+        return ""
+    elif fc.fc[3:6] == solved_fc.fc[3:6]:  # horizontal line case
+        fc.execute_move(fc.sanitise_move(move))
+        return move
+    elif [fc.fc[1], fc.fc[3]] == [solved_fc.fc[1], solved_fc.fc[3]]:  # LB L shape case
+        fc.execute_move(fc.sanitise_move(move))
+        return move + oll_cross(fc)
+    elif solved_fc.fc[4] not in [fc.fc[1], fc.fc[3:6], fc.fc[7]]:  # dot case
+        fc.execute_move(fc.sanitise_move(move))
+        return move + oll_cross(fc)
+    else:  # other cases
+        return "U" + oll_cross(fc)
 
 
-def solve_pll(facelet_string):
+def solve_oll(fc):
+    return oll_cross(fc)
+
+
+def solve_pll(fc):
     return ""
 
 
 def solve_cube(facelet_string):
+    fc = facelet_cube.FaceletCube()
+    fc.string_to_facelet(facelet_string)
     solution_string = ""
-    if not cross_solved(facelet_string):
-        solution_string += solve_cross(facelet_string)
-    if not bottom_corners_solved(facelet_string):
-        solution_string += solve_bottom_corners(facelet_string)
-    if not middle_layer_solved(facelet_string):
-        solution_string += solve_middle_layer(facelet_string)
-    if not oll_solved(facelet_string):
-        solution_string += solve_oll(facelet_string)
-    if not pll_solved(facelet_string):
-        solution_string += solve_pll(facelet_string)
+    if not cross_solved(fc):
+        solution_string += solve_cross(fc)
+    if not bottom_corners_solved(fc):
+        solution_string += solve_bottom_corners(fc)
+    if not middle_layer_solved(fc):
+        solution_string += solve_middle_layer(fc)
+    if not oll_solved(fc):
+        solution_string += solve_oll(fc)
+    if not pll_solved(fc):
+        solution_string += solve_pll(fc)
     return solution_string
 
