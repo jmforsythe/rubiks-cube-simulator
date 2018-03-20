@@ -151,32 +151,17 @@ class NetDisplay(QWidget):
             frame.setStyleSheet("background-color: %s; color: %s; margin:0px; border:2px solid rgb(20,20,20);"
                                 % (frame.col, frame.col))
 
-    @staticmethod
-    def sanitise_move(string):
-        move_string = ""
-        for i in range(len(string)):
-            # Support for 90° clockwise moves
-            if string[i] in ["U", "R", "F", "D", "L", "B"]:
-                move_string += string[i]
-            # Support for 90° anticlockwise moves
-            elif string[i] == "\'":
-                move_string += string[i - 1] * 2
-            # Support for 180° moves
-            elif string[i] == "2":
-                move_string += string[i - 1]
-        return move_string
-
     def execute_move(self):
         if self.sender().text() in ("U", "R", "F", "D", "L", "B"):
             self.fc.execute_move(self.sender().text())
         else:
             text_box = self.move_entry.toPlainText()
-            self.fc.execute_move(self.sanitise_move(text_box))
+            self.fc.execute_move(self.fc.sanitise_move(text_box))
         self.modify(self.fc.facelet_to_string())
 
     def calculate_degree(self):
         text_box = self.move_entry.toPlainText()
-        degree = self.fc.calculate_degree(self.sanitise_move(text_box))
+        degree = self.fc.calculate_degree(self.fc.sanitise_move(text_box))
         self.output_textbox.append(
             "Degree of algorithm <font color=\"red\">%s</font> is <b>%s</b>" % (text_box, degree))
 
