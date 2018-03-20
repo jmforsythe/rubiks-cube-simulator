@@ -120,12 +120,4 @@ edge_facelets = [[Facelets.U6, Facelets.R2], [Facelets.U8, Facelets.F2], [Facele
                  [Facelets.F4, Facelets.L6], [Facelets.B6, Facelets.L4], [Facelets.B4, Facelets.R6]
                  ]
 
-face_colours_rgb = ["white",
-                    QColor(0, 100, 255).name(),
-                    "red",
-                    "yellow",
-                    "lime",
-                    "orange"
-                    ]
-
 solved_cube = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
