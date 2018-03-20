@@ -76,8 +76,30 @@ def oll_cross(fc):
         return "U" + oll_cross(fc)
 
 
+def oll_corners(fc):
+    if [fc.fc[1], fc.fc[3:8]] == [solved_fc.fc[1], solved_fc.fc[3:8]]:  # sune case
+        fc.execute_move(fc.sanitise_move("RUR'URU2R'"))
+        return "RUR'URU2R'"
+    elif [fc.fc[1:6], fc.fc[7]] == [solved_fc.fc[1:6], solved_fc.fc[7]]:  # anti-sune case
+        fc.execute_move(fc.sanitise_move("RU2R'U'RU'R'"))
+        return "RU2R'U'RU'R'"
+    elif [fc.fc[1:6], fc.fc[7], fc.fc[9]] == [solved_fc.fc[1:6], solved_fc.fc[7], solved_fc.fc[9]]:  # chameleon case
+        fc.execute_move(fc.sanitise_move("LFR'F'L'FRF'"))
+        return "LFR'F'L'FRF'"
+    elif [fc.fc[0:1], fc.fc[3:6], fc.fc[7:9]] == [solved_fc.fc[0:1], solved_fc.fc[3:6], solved_fc.fc[7:9]]:  # bowtie
+        fc.execute_move(fc.sanitise_move("R2D'RU'R'DRUR"))
+        return "R2D'RU'R'DRUR"
+    elif [fc.fc[1:6], fc.fc[7], fc.fc[18]] == [solved_fc.fc[1:6], solved_fc.fc[7], solved_fc.fc[18]]:  # headlights case
+        fc.execute_move(fc.sanitise_move("R2DR'U2RD'R'U2R'"))
+        return "R2DR'U2RD'R'U2R'"
+    else:
+        fc.execute_move("U")
+        return "U" + oll_corners(fc)
+
+
+
 def solve_oll(fc):
-    return oll_cross(fc)
+    return oll_cross(fc) + oll_corners(fc)
 
 
 def solve_pll(fc):
