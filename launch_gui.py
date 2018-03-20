@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (QWidget, QApplication, QGridLayout, QPushButton, QB
 from PyQt5.QtGui import QColor, QIcon
 from facelet_cube import FaceletCube
 from enums_and_defs import solved_cube
+import solve
 
 # Default width of facelet squares (in pixels) for drawing the window
 width = 60
@@ -199,7 +200,8 @@ class NetDisplay(QWidget):
             self.output_textbox.append("Cannot solve cube:")
             self.verify()
         else:
-            self.output_textbox.append("Solved.")
+            solution = solve.solve_cube(self.fc.facelet_to_string().replace(" ", ""))
+            self.output_textbox.append("The solution to this cube is: " + solution)
 
 
 def main():
