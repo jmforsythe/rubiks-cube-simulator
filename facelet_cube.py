@@ -179,6 +179,23 @@ class FaceletCube:
              2, 37, 38, 1, 40, 41, 0, 43, 44,
              51, 48, 45, 52, 49, 46, 53, 50, 47]
 
+    # Takes user input and converts it to a string that can be executed
+    @staticmethod
+    def sanitise_move(string):
+        move_string = ""
+        for i in range(len(string)):
+            # Support for 90° clockwise moves
+            if string[i] in ["U", "R", "F", "D", "L", "B"]:
+                move_string += string[i]
+            # Support for 90° anticlockwise moves
+            elif string[i] == "\'":
+                move_string += string[i - 1] * 2
+            # Support for 180° moves
+            elif string[i] == "2":
+                move_string += string[i - 1]
+        return move_string
+
+
     # This function combines any two reordering lists of the same length
     @staticmethod
     def combine_move(move1, move2):

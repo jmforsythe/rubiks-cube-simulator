@@ -1,4 +1,3 @@
-import net_display
 import facelet_cube
 
 
@@ -28,22 +27,15 @@ def main():
     # The main program loop
     while True:
         print(fc.facelet_to_string())
-        move_string = ""
         user_input = input("Enter move string: ")
         if user_input in ["quit", "q"]:
             return 0
         if user_input == "display":
+            import net_display
             net_display.launch(fc.facelet_to_string())
-        for i in range(len(user_input)):
-            # Support for 90° clockwise moves
-            if user_input[i] in ["U", "R", "F", "D", "L", "B"]:
-                move_string += user_input[i]
-            # Support for 90° anticlockwise moves
-            elif user_input[i] == "\'":
-                move_string += user_input[i - 1] * 2
-            # Support for 180° moves
-            elif user_input[i] == "2":
-                move_string += user_input[i - 1]
+        if user_input == "solve":
+            solve.solve_cube(fc.facelet_to_string())
+        move_string = fc.sanitise_move(user_input)
         # If user tells program to repeat, it will perform entered move sequence until returning to starting position
         if "repeat" in user_input:
             print("This move sequence takes %d repetitions to repeat itself" % fc.calculate_degree(move_string))
