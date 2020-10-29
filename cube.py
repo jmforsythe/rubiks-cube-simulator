@@ -33,8 +33,6 @@ def main():
         if user_input == "display":
             import net_display
             net_display.launch(fc.facelet_to_string())
-        if user_input == "solve":
-            solve.solve_cube(fc.facelet_to_string())
         move_string = fc.sanitise_move(user_input)
         # If user tells program to repeat, it will perform entered move sequence until returning to starting position
         if "repeat" in user_input:
