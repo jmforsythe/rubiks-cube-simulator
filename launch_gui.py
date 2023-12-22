@@ -199,7 +199,7 @@ class NetDisplay(QWidget):
             self.output_textbox.append("Cannot solve cube:")
             self.verify()
         else:
-            self.output_textbox.append("Solved.")
+            self.output_textbox.append("Solving functionality not yet implemented.")
 
 
 def main():
